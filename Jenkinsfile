@@ -4,23 +4,20 @@ pipeline {
     stages {
         stage('Checkout') {
             steps {
-                echo 'Checking out source code...'
-                git branch: 'main', url: 'https://github.com/Suyash4561/python-jenkins-pipeline.git'
+                git 'https://github.com/Suyash4561/python-jenkins-pipeline.git'
             }
         }
 
         stage('Setup Python Environment') {
             steps {
-                echo 'Creating Python virtual environment...'
                 bat 'python -m venv venv'
-                bat '.\\venv\\Scripts\\activate && python -m pip install --upgrade pip'
+                bat '.\\venv\\Scripts\\activate && pip install --upgrade pip'
                 bat '.\\venv\\Scripts\\activate && pip install -r requirements.txt'
             }
         }
 
-        stage('Run Unit Tests') {
+        stage('Run Tests') {
             steps {
-                echo 'Running tests...'
                 bat '.\\venv\\Scripts\\activate && pytest test_app.py --junitxml=test-reports/results.xml --html=test-reports/report.html --self-contained-html'
             }
             post {
@@ -44,7 +41,7 @@ pipeline {
             echo 'Python CI Pipeline completed successfully!'
         }
         failure {
-            echo 'Pipeline failed. Check test reports!'
+            echo 'Pipeline failed. Check the test results.'
         }
     }
 }

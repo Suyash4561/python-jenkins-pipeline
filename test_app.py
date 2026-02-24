@@ -1,5 +1,4 @@
-def add(a, b):
-    return a + b
+from app import add
 
-if __name__ == "__main__":
-    print(add(2,3))
+def test_add():
+    assert add(2, 3) == 5
